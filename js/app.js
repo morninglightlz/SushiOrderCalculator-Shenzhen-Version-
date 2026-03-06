@@ -131,23 +131,59 @@ function updateTopView() {
 
 // 更新正视图
 function updateFrontView() {
-    const currentPlates = elements.stackContainer.children.length;
-    const targetPlates = state.plateOrder.length;
+    const currentChildren = Array.from(elements.stackContainer.children);
+    const targetOrder = state.plateOrder;
 
-    // 添加新的碟子
-    for (let i = currentPlates; i < targetPlates; i++) {
-        const color = state.plateOrder[i];
+    // 智能判断是否需要重建
+    const needsRebuild = checkIfNeedsRebuild(currentChildren, targetOrder);
+
+    if (needsRebuild) {
+        rebuildStack(targetOrder);
+    }
+
+    // 更新总价
+    updateTotalDisplay();
+}
+
+// 检查是否需要重建堆叠
+function checkIfNeedsRebuild(currentChildren, targetOrder) {
+    // 数量不同，需要重建
+    if (currentChildren.length !== targetOrder.length) {
+        return true;
+    }
+
+    // 数量相同，检查每个位置的颜色是否匹配
+    for (let i = 0; i < targetOrder.length; i++) {
+        const expectedColor = targetOrder[i];
+        const colorClass = `plate-${expectedColor}`;
+        if (!currentChildren[i].classList.contains(colorClass)) {
+            return true;
+        }
+    }
+
+    // 完全匹配，不需要重建
+    return false;
+}
+
+// 重建堆叠视图
+function rebuildStack(plateOrder) {
+    elements.stackContainer.innerHTML = '';
+
+    const fragment = document.createDocumentFragment();
+
+    plateOrder.forEach((color) => {
         const plate = document.createElement('div');
         plate.className = `stack-plate ${PLATE_CONFIG[color].class}`;
-        elements.stackContainer.appendChild(plate);
-    }
+        plate.style.marginBottom = `${(-10)}px`;
+        plate.style.animation = 'none'; // 禁用动画避免闪烁
+        fragment.appendChild(plate);
+    });
 
-    // 移除多余的碟子（用于清除或减少操作）
-    while (elements.stackContainer.children.length > targetPlates) {
-        elements.stackContainer.removeChild(elements.stackContainer.lastChild);
-    }
+    elements.stackContainer.appendChild(fragment);
+}
 
-    // 计算总价
+// 更新总价显示
+function updateTotalDisplay() {
     const total = calculateTotal();
     elements.totalDisplay.innerHTML = `
         <span class="label">总价:</span>

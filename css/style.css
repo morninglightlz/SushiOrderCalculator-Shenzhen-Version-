@@ -339,6 +339,7 @@ body {
     background-size: 593% 114%;
     background-repeat: no-repeat;
     background-position: center;
+    position: relative;
 }
 
 .stack-plate.plate-red {
