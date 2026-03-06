@@ -118,15 +118,122 @@ function updateQuantityDisplay() {
 
 // 更新俯视图
 function updateTopView() {
+    const currentChildren = Array.from(elements.platesContainer.children);
+    const targetOrder = state.plateOrder;
+
+    // 智能更新：只处理变化的部分
+    updateTopViewSmart(currentChildren, targetOrder);
+}
+
+// 智能更新俯视图
+function updateTopViewSmart(currentChildren, targetOrder) {
+    const currentCount = currentChildren.length;
+    const targetCount = targetOrder.length;
+
+    // 情况1：添加了新盘子
+    if (targetCount > currentCount) {
+        // 添加新增的盘子（带落下动画）
+        for (let i = currentCount; i < targetCount; i++) {
+            const color = targetOrder[i];
+            const plate = document.createElement('div');
+            plate.className = `plate-item ${PLATE_CONFIG[color].class}`;
+            plate.style.animation = 'dropIn 0.4s ease-out';
+            plate.style.zIndex = i + 1; // 新盘子在上面
+            elements.platesContainer.appendChild(plate);
+        }
+    }
+    // 情况2：移除了盘子
+    else if (targetCount < currentCount) {
+        // 找出被移除的盘子并播放消失动画
+        const removeResult = findAndRemovePlates(currentChildren, targetOrder);
+
+        // 移除这些盘子
+        removeResult.toRemove.forEach(plate => {
+            removePlateWithAnimation(plate);
+        });
+    }
+    // 情况3：数量相同但颜色不匹配（重建）
+    else {
+        const needsRebuild = currentChildren.some((child, index) => {
+            const expectedColor = targetOrder[index];
+            const colorClass = `plate-${expectedColor}`;
+            return !child.classList.contains(colorClass);
+        });
+
+        if (needsRebuild) {
+            rebuildTopView(targetOrder);
+        }
+    }
+}
+
+// 找出需要移除的盘子，并更新剩余盘子的z-index
+function findAndRemovePlates(currentChildren, targetOrder) {
+    const toRemove = [];
+    const matchedTarget = new Set(); // 记录已匹配的目标索引
+
+    // 为每个当前盘子找到在目标中的匹配
+    currentChildren.forEach((child) => {
+        const childColor = getPlateColorFromClass(child);
+        let foundMatch = false;
+
+        // 在目标中找第一个未匹配的同色盘子
+        for (let i = 0; i < targetOrder.length; i++) {
+            if (!matchedTarget.has(i) && targetOrder[i] === childColor) {
+                // 找到匹配，更新z-index
+                child.style.zIndex = i + 1;
+                matchedTarget.add(i);
+                foundMatch = true;
+                break;
+            }
+        }
+
+        // 没找到匹配，这个盘子需要被移除
+        if (!foundMatch) {
+            toRemove.push(child);
+        }
+    });
+
+    return { toRemove };
+}
+
+// 从class中获取盘子颜色
+function getPlateColorFromClass(plateElement) {
+    for (const color of Object.keys(PLATE_CONFIG)) {
+        if (plateElement.classList.contains(`plate-${color}`)) {
+            return color;
+        }
+    }
+    return null;
+}
+
+// 带动画移除盘子
+function removePlateWithAnimation(plateElement) {
+    // 添加消失动画
+    plateElement.style.animation = 'dropOut 0.4s ease-in forwards';
+
+    // 动画结束后移除DOM
+    plateElement.addEventListener('animationend', () => {
+        if (plateElement.parentNode === elements.platesContainer) {
+            elements.platesContainer.removeChild(plateElement);
+        }
+    }, { once: true });
+}
+
+// 重建俯视图（用于颜色不匹配的情况）
+function rebuildTopView(plateOrder) {
     elements.platesContainer.innerHTML = '';
 
-    // 只显示最新点击的碟子
-    if (state.plateOrder.length > 0) {
-        const lastColor = state.plateOrder[state.plateOrder.length - 1];
+    const fragment = document.createDocumentFragment();
+
+    plateOrder.forEach((color, index) => {
         const plate = document.createElement('div');
-        plate.className = `plate-item ${PLATE_CONFIG[lastColor].class}`;
-        elements.platesContainer.appendChild(plate);
-    }
+        plate.className = `plate-item ${PLATE_CONFIG[color].class}`;
+        plate.style.animation = 'none';
+        plate.style.zIndex = index + 1;
+        fragment.appendChild(plate);
+    });
+
+    elements.platesContainer.appendChild(fragment);
 }
 
 // 更新正视图
