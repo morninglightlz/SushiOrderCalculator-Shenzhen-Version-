@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>寿司碟计价器</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 上方控制区 -->
+    <div class="control-panel">
+        <div class="plate-controls">
+            <!-- 白碟 ¥8 -->
+            <div class="plate-control" data-color="white">
+                <button class="plate-btn plate-white"></button>
+                <div class="quantity-control">
+                    <button class="minus-btn">➖</button>
+                    <span class="quantity">0</span>
+                </div>
+                <span class="price">¥8</span>
+            </div>
+            <!-- 红碟 ¥10 -->
+            <div class="plate-control" data-color="red">
+                <button class="plate-btn plate-red"></button>
+                <div class="quantity-control">
+                    <button class="minus-btn">➖</button>
+                    <span class="quantity">0</span>
+                </div>
+                <span class="price">¥10</span>
+            </div>
+            <!-- 银碟 ¥15 -->
+            <div class="plate-control" data-color="silver">
+                <button class="plate-btn plate-silver"></button>
+                <div class="quantity-control">
+                    <button class="minus-btn">➖</button>
+                    <span class="quantity">0</span>
+                </div>
+                <span class="price">¥15</span>
+            </div>
+            <!-- 金碟 ¥20 -->
+            <div class="plate-control" data-color="gold">
+                <button class="plate-btn plate-gold"></button>
+                <div class="quantity-control">
+                    <button class="minus-btn">➖</button>
+                    <span class="quantity">0</span>
+                </div>
+                <span class="price">¥20</span>
+            </div>
+            <!-- 黑碟 ¥28 -->
+            <div class="plate-control" data-color="black">
+                <button class="plate-btn plate-black"></button>
+                <div class="quantity-control">
+                    <button class="minus-btn">➖</button>
+                    <span class="quantity">0</span>
+                </div>
+                <span class="price">¥28</span>
+            </div>
+        </div>
+        <button class="clear-btn" id="clearBtn">清除</button>
+    </div>
+
+    <!-- 下方显示区 -->
+    <div class="display-area">
+        <button class="back-btn" id="backBtn">返回</button>
+        <button class="total-btn" id="totalBtn">总计</button>
+
+        <!-- 俯视图 -->
+        <div class="table-view top-view" id="topView">
+            <div class="table-surface">
+                <div class="plates-container" id="platesContainer"></div>
+            </div>
+        </div>
+
+        <!-- 正视图 -->
+        <div class="table-view front-view" id="frontView" style="display: none;">
+            <div class="table-side">
+                <div class="stack-container" id="stackContainer"></div>
+            </div>
+            <div class="total-display" id="totalDisplay"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 上方控制区 - 占20% */
+.control-panel {
+    height: 20vh;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid #ddd;
+    position: relative;
+}
+
+.plate-controls {
+    display: flex;
+    gap: 30px;
+    align-items: flex-end;
+}
+
+.plate-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 碟子按钮样式 */
+.plate-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid #333;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.plate-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.plate-btn:active {
+    transform: scale(0.95);
+}
+
+/* 碟子颜色 - 使用图片素材 */
+.plate-btn {
+    background-image: url('../images/plates.png');
+    background-size: 500% 100%;
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.plate-red {
+    background-position: 0% 50%;
+}
+
+.plate-white {
+    background-position: 25% 50%;
+}
+
+.plate-gold {
+    background-position: 50% 50%;
+}
+
+.plate-black {
+    background-position: 75% 50%;
+}
+
+.plate-silver {
+    background-position: 100% 50%;
+}
+
+/* 数量控制 */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.minus-btn {
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.minus-btn:hover {
+    background: #ff6b7a;
+}
+
+.minus-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.quantity {
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 24px;
+    text-align: center;
+}
+
+.price {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 下方显示区 - 占80% */
+.display-area {
+    height: 80vh;
+    position: relative;
+    background: linear-gradient(135deg, #f5e6d3 0%, #e8d5b7 100%);
+    overflow: hidden;
+}
+
+/* 返回按钮 */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(46, 204, 113, 0.9);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s;
+    color: white;
+}
+
+.back-btn:hover {
+    background: #2ecc71;
+}
+
+/* 清除按钮 */
+.clear-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(231, 76, 60, 0.9);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: white;
+}
+
+.clear-btn:hover {
+    background: #e74c3c;
+}
+
+/* 总计按钮 */
+.total-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 215, 0, 0.9);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.total-btn:hover {
+    background: #ffd700;
+}
+
+/* 俯视图 */
+.table-view {
+    width: 100%;
+    height: 100%;
+}
+
+.top-view .table-surface {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, #f5e6d3 0%, #e8d5b7 100%);
+}
+
+/* 桌子纹理 */
+.table-surface::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 100px,
+            rgba(139, 90, 43, 0.05) 100px,
+            rgba(139, 90, 43, 0.05) 101px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 100px,
+            rgba(139, 90, 43, 0.05) 100px,
+            rgba(139, 90, 43, 0.05) 101px
+        );
+}
+
+/* 碟子容器 */
+.plates-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
+    padding: 20px;
+}
+
+/* 俯视图碟子 */
+.plate-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    position: relative;
+    animation: dropIn 0.3s ease-out;
+    background-image: url('../images/plates.png');
+    background-size: 600% 115%;
+    background-repeat: no-repeat;
+}
+
+.plate-item.plate-red {
+    background-position: 2.6% 58%;
+}
+
+.plate-item.plate-white {
+    background-position: 26.7% 50.7%;
+}
+
+.plate-item.plate-gold {
+    background-position: 50% 63%;
+}
+
+.plate-item.plate-black {
+    background-position: 74% 52%
+}
+
+.plate-item.plate-silver {
+    background-position: 97.6% 59%;
+}
+
+@keyframes dropIn {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 正视图 */
+.front-view {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5e6d3 0%, #e8d5b7 100%);
+}
+
+.table-side {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 78px;
+}
+
+/* 桌子侧面 */
+.table-side::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to bottom, #deb887, #d2a679);
+    border-top: 4px solid #c49a6c;
+}
+
+/* 碟子堆叠 */
+.stack-container {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 3px;
+    z-index: 1;
+    max-height: calc(100% - 150px);
+    overflow: visible;
+    padding: 10px;
+}
+
+.stack-plate {
+    width: 140px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    animation: stackIn 0.3s ease-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-image: url('../images/plates.png');
+    background-size: 593% 114%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.stack-plate.plate-red {
+    background-position: 2.5% 51%;
+}
+
+.stack-plate.plate-white {
+    background-position: 25.9% 50%;
+}
+
+.stack-plate.plate-gold {
+    background-position: 50% 50%;
+}
+
+.stack-plate.plate-black {
+    background-position: 74.1% 50%;
+}
+
+.stack-plate.plate-silver {
+    background-position: 97.9% 50%;
+}
+
+@keyframes stackIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 总价显示 */
+.total-display {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px 40px;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.total-display .label {
+    font-size: 16px;
+    color: #666;
+    margin-right: 10px;
+}
+
+.total-display .amount {
+    color: #e74c3c;
+    font-size: 32px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    /* 禁用 hover 效果（触摸设备） */
+    .plate-btn:hover,
+    .minus-btn:hover,
+    .back-btn:hover,
+    .clear-btn:hover,
+    .total-btn:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* 添加触摸反馈 */
+    .plate-btn:active,
+    .minus-btn:active,
+    .back-btn:active,
+    .total-btn:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    .clear-btn:active {
+        opacity: 0.8;
+    }
+
+    /* 上方控制区 */
+    .control-panel {
+        height: 18vh;
+        padding: 5px;
+    }
+
+    .plate-controls {
+        gap: 8px;
+    }
+
+    .plate-control {
+        gap: 4px;
+    }
+
+    /* 碟子按钮缩小 */
+    .plate-btn {
+        width: 45px;
+        height: 45px;
+        border-width: 2px;
+    }
+
+    /* 数量控制 */
+    .minus-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+
+    .quantity {
+        font-size: 14px;
+        min-width: 18px;
+    }
+
+    .price {
+        font-size: 11px;
+    }
+
+    /* 顶部按钮 */
+    .back-btn,
+    .total-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+        top: 10px;
+    }
+
+    .back-btn {
+        left: 10px;
+    }
+
+    .total-btn {
+        right: 10px;
+    }
+
+    /* 清除按钮 */
+    .clear-btn {
+        bottom: 8px;
+        right: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* 俯视图碟子 */
+    .plate-item {
+        width: 200px;
+        height: 200px;
+    }
+
+    /* 正视图碟子 */
+    .stack-container {
+        width: 150px;
+        max-height: calc(100% - 130px);
+        gap: 3px;
+        overflow: visible;
+    }
+
+    .stack-plate {
+        width: 130px;
+        height: 16px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 总价显示 */
+    .total-display {
+        padding: 12px 24px;
+        font-size: 18px;
+        bottom: 20px;
+    }
+
+    .total-display .label {
+        font-size: 14px;
+    }
+
+    .total-display .amount {
+        font-size: 24px;
+    }
+}
+
+/* 超小屏幕适配（如 iPhone SE） */
+@media (max-width: 375px) {
+    .plate-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .plate-controls {
+        gap: 6px;
+    }
+
+    .quantity {
+        font-size: 12px;
+        min-width: 16px;
+    }
+
+    .price {
+        font-size: 10px;
+    }
+
+    .minus-btn {
+        width: 18px;
+        height: 18px;
+        font-size: 9px;
+    }
+
+    .back-btn,
+    .total-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .clear-btn {
+        bottom: 6px;
+        right: 6px;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
