@@ -489,11 +489,18 @@ class CustomPlateRenderer {
     }
 
     /**
-     * 清空所有显示
+     * 清空所有显示（两个视图）
      */
     clear() {
-        if (this.p1Container) this.p1Container.innerHTML = '';
-        if (this.p2Container) this.p2Container.innerHTML = '';
+        // 清空俯视图
+        if (this.topP1Container) this.topP1Container.innerHTML = '';
+        if (this.topP2Container) this.topP2Container.innerHTML = '';
+        if (this.topP3Container) this.topP3Container.innerHTML = '';
+
+        // 清空正视图
+        if (this.frontP1Container) this.frontP1Container.innerHTML = '';
+        if (this.frontP2Container) this.frontP2Container.innerHTML = '';
+        if (this.frontP3Container) this.frontP3Container.innerHTML = '';
     }
 
     /**
