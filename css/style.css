@@ -476,7 +476,7 @@ body {
     .total-btn {
         padding: 8px 12px;
         font-size: 14px;
-        top: 10px;
+        bottom: 10px;
     }
 
     .back-btn {
@@ -489,7 +489,7 @@ body {
 
     /* 清除按钮 */
     .clear-btn {
-        bottom: 8px;
+        top: 8px;
         right: 8px;
         padding: 8px 12px;
         font-size: 14px;
@@ -561,10 +561,19 @@ body {
     .total-btn {
         padding: 6px 10px;
         font-size: 12px;
+        bottom: 10px;
+    }
+
+    .back-btn {
+        left: 10px;
+    }
+
+    .total-btn {
+        right: 10px;
     }
 
     .clear-btn {
-        bottom: 6px;
+        top: 6px;
         right: 6px;
         padding: 6px 10px;
         font-size: 12px;
