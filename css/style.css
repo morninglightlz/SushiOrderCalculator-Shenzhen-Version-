@@ -754,6 +754,10 @@ body {
         height: 150px;
     }
 
+    .p2-p3-box {
+        bottom: 50px;
+    }
+
     .custom-plate-tag {
         padding: 6px 10px;
         font-size: 12px;
