@@ -133,7 +133,7 @@ body {
 /* 返回按钮 */
 .back-btn {
     position: absolute;
-    top: 20px;
+    bottom: 20px;
     left: 20px;
     background: rgba(46, 204, 113, 0.9);
     border: none;
@@ -141,7 +141,7 @@ body {
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    z-index: 10;
+    z-index: 20; /* 确保在P1/P2/P3之上 */
     transition: background 0.2s;
     color: white;
 }
@@ -153,7 +153,7 @@ body {
 /* 清除按钮 */
 .clear-btn {
     position: absolute;
-    bottom: 10px;
+    top: 10px;
     right: 10px;
     background: rgba(231, 76, 60, 0.9);
     border: none;
@@ -161,6 +161,7 @@ body {
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
+    z-index: 20;
     transition: background 0.2s;
     color: white;
 }
@@ -172,7 +173,7 @@ body {
 /* 总计按钮 */
 .total-btn {
     position: absolute;
-    top: 20px;
+    bottom: 20px;
     right: 20px;
     background: rgba(255, 215, 0, 0.9);
     border: none;
@@ -181,7 +182,7 @@ body {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 10;
+    z-index: 20; /* 确保在P1/P2/P3之上 */
     transition: background 0.2s;
 }
 
@@ -605,3 +606,205 @@ body {
 .p3 {
     border: 2px solid #000;
 }
+
+/* ==================== 自定义碟样式 ==================== */
+
+/* 自定义碟标签 */
+.custom-plate-tag {
+    background: linear-gradient(145deg, #9b59b6, #8e44ad);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 4px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.custom-plate-tag:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-plate-tag:active {
+    transform: scale(0.95);
+}
+
+.custom-plate-tag .price {
+    font-size: 16px;
+}
+
+.custom-plate-tag .hint {
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* P3输入区域 */
+.p3-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    height: 100%;
+    justify-content: center;
+}
+
+.p3-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    transition: border-color 0.2s;
+    font-weight: bold;
+}
+
+.p3-input:focus {
+    outline: none;
+    border-color: #9b59b6;
+    box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+}
+
+.p3-input::placeholder {
+    font-weight: normal;
+    opacity: 0.5;
+}
+
+.p3-confirm-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.p3-confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.p3-confirm-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* P1和P2容器样式优化 */
+.p1 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.p2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .p1,
+    .p2-p3-box {
+        height: 150px;
+    }
+
+    .custom-plate-tag {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 3px;
+    }
+
+    .custom-plate-tag .price {
+        font-size: 14px;
+    }
+
+    .custom-plate-tag .hint {
+        font-size: 9px;
+    }
+
+    .p3-input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .p3-confirm-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .p1,
+    .p2 {
+        padding: 6px;
+        gap: 3px;
+    }
+}
+
+/* 超小屏幕适配（如 iPhone SE） */
+@media (max-width: 375px) {
+    .p1,
+    .p2-p3-box {
+        height: 120px;
+    }
+
+    .custom-plate-tag {
+        padding: 4px 8px;
+        font-size: 11px;
+        margin: 2px;
+    }
+
+    .custom-plate-tag .price {
+        font-size: 12px;
+    }
+
+    .custom-plate-tag .hint {
+        display: none;
+    }
+
+    .p3-input {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .p3-confirm-btn {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
