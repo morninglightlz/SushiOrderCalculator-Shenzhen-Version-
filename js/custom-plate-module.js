@@ -117,6 +117,24 @@ class CustomPlateManager {
     }
 
     /**
+     * 选择目标队列用于添加新碟子
+     * @returns {Array} 目标队列（p1Queue或p2Queue）
+     */
+    selectTargetQueue() {
+        const p1Length = this.p1Queue.length;
+        const p2Length = this.p2Queue.length;
+
+        // 如果都为空，使用交叉分配规则（基于已添加的总数）
+        if (p1Length === 0 && p2Length === 0) {
+            const totalAdded = this.nextPlateId;
+            return totalAdded % 2 === 0 ? this.p1Queue : this.p2Queue;
+        }
+
+        // 插入较短的队列，相同时优先P1
+        return p1Length <= p2Length ? this.p1Queue : this.p2Queue;
+    }
+
+    /**
      * 获取队列长度
      * @returns {number} 队列长度
      */
