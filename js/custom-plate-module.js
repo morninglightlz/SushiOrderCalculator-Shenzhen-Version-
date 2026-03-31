@@ -21,6 +21,9 @@ class CustomPlateManager {
             return null;
         }
 
+        // 选择目标队列（在递增ID之前，这样selectTargetQueue可以使用当前ID判断）
+        const targetQueue = this.selectTargetQueue();
+
         // 创建碟子对象
         const plate = {
             id: this.nextPlateId++,
@@ -28,8 +31,7 @@ class CustomPlateManager {
             createTime: Date.now()
         };
 
-        // 选择目标队列并添加
-        const targetQueue = this.selectTargetQueue();
+        // 添加到选定的队列
         targetQueue.push(plate);
 
         return plate;
