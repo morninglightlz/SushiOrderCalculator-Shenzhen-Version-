@@ -347,15 +347,13 @@ function showFrontView() {
 }
 
 // 显示俯视图
+// 显示俯视图
 function showTopView() {
     state.currentView = 'top';
     elements.frontView.style.display = 'none';
     elements.topView.style.display = 'block';
     elements.backBtn.style.display = 'block';
     elements.totalBtn.style.display = 'block';
-
-    // 显示俯视图的自定义碟区域
-    document.querySelectorAll('.p1, .p2-p3-box').forEach(el => el.style.display = '');
 
     updateTopView();
 }
