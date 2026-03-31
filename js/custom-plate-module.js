@@ -179,54 +179,40 @@ class CustomPlateRenderer {
     }
 
     /**
-     * 渲染P1区域（偶数索引的自定义碟）
+     * 渲染P1区域（偶数索引自定义碟）
      */
     renderP1() {
         if (!this.p1Container) return;
-
         const p1Plates = this.manager.getP1Plates();
         this.p1Container.innerHTML = '';
-
         if (p1Plates.length === 0) {
             this.p1Container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;">P1：偶数索引自定义碟</div>';
             return;
         }
-
         const fragment = document.createDocumentFragment();
-
-        p1Plates.forEach((plate, displayIndex) => {
-            // 计算在原队列中的实际索引
-            const actualIndex = displayIndex * 2;
-            const tag = this.createPlateTag(plate, actualIndex);
+        p1Plates.forEach((plate, index) => {
+            const tag = this.createPlateTag(plate, index, 'p1');
             fragment.appendChild(tag);
         });
-
         this.p1Container.appendChild(fragment);
     }
 
     /**
-     * 渲染P2区域（奇数索引的自定义碟）
+     * 渲染P2区域（奇数索引自定义碟）
      */
     renderP2() {
         if (!this.p2Container) return;
-
         const p2Plates = this.manager.getP2Plates();
         this.p2Container.innerHTML = '';
-
         if (p2Plates.length === 0) {
             this.p2Container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;">P2：奇数索引自定义碟</div>';
             return;
         }
-
         const fragment = document.createDocumentFragment();
-
-        p2Plates.forEach((plate, displayIndex) => {
-            // 计算在原队列中的实际索引
-            const actualIndex = displayIndex * 2 + 1;
-            const tag = this.createPlateTag(plate, actualIndex);
+        p2Plates.forEach((plate, index) => {
+            const tag = this.createPlateTag(plate, index, 'p2');
             fragment.appendChild(tag);
         });
-
         this.p2Container.appendChild(fragment);
     }
 
@@ -234,20 +220,19 @@ class CustomPlateRenderer {
      * 创建自定义碟标签元素
      * @param {Object} plate - 碟子对象
      * @param {number} index - 在队列中的索引
+     * @param {string} queueType - 队列类型 ('p1' 或 'p2')
      * @returns {HTMLElement} 碟子标签元素
      */
-    createPlateTag(plate, index) {
+    createPlateTag(plate, index, queueType) {
         const tag = document.createElement('div');
         tag.className = 'custom-plate-tag';
         tag.dataset.index = index;
+        tag.dataset.queueType = queueType;
         tag.innerHTML = `
             <span class="price">¥${plate.price}</span>
             <span class="hint">长按删除</span>
         `;
-
-        // 绑定长按删除事件
-        this.bindLongPress(tag, index);
-
+        this.bindLongPress(tag, index, queueType);
         return tag;
     }
 
@@ -338,8 +323,9 @@ class CustomPlateRenderer {
      * 绑定长按删除事件
      * @param {HTMLElement} element - 要绑定的元素
      * @param {number} index - 碟子索引
+     * @param {string} queueType - 队列类型 ('p1' 或 'p2')
      */
-    bindLongPress(element, index) {
+    bindLongPress(element, index, queueType) {
         const startPress = () => {
             this.pressTimer = setTimeout(() => {
                 // 长按触发，添加视觉反馈
@@ -351,7 +337,7 @@ class CustomPlateRenderer {
 
                 // 确认删除
                 if (confirm('确定要删除这个碟子吗？')) {
-                    this.handleRemovePlate(index);
+                    this.handleRemovePlate(index, queueType);
                 }
 
                 // 恢复样式
@@ -386,17 +372,15 @@ class CustomPlateRenderer {
     /**
      * 处理删除碟子
      * @param {number} index - 碟子索引
+     * @param {string} queueType - 队列类型 ('p1' 或 'p2')
      */
-    handleRemovePlate(index) {
-        const success = this.manager.remove(index);
+    handleRemovePlate(index, queueType) {
+        const success = this.manager.remove(queueType, index);
         if (success) {
-            // 重新渲染P1和P2
             this.renderP1();
             this.renderP2();
-
-            // 触发回调
             if (this.onRemoveCallback) {
-                this.onRemoveCallback(index);
+                this.onRemoveCallback(index, queueType);
             }
         }
     }
@@ -522,16 +506,17 @@ const CustomPlateModule = (function() {
 
     /**
      * 删除自定义碟
+     * @param {string} queueType - 队列类型 ('p1' 或 'p2')
      * @param {number} index - 碟子索引
      * @returns {boolean} 成功返回true，失败返回false
      */
-    function removeCustomPlate(index) {
+    function removeCustomPlate(queueType, index) {
         if (!initialized) {
             console.error('CustomPlateModule: 未初始化');
             return false;
         }
 
-        const success = manager.remove(index);
+        const success = manager.remove(queueType, index);
         if (success) {
             renderer.renderAll();
             return true;
