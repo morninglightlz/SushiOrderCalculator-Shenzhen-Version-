@@ -517,9 +517,16 @@ class CustomPlateRenderer {
         });
         this.boundElements = [];
 
-        this.p1Container = null;
-        this.p2Container = null;
-        this.p3Container = null;
+        // 清空俯视图容器引用
+        this.topP1Container = null;
+        this.topP2Container = null;
+        this.topP3Container = null;
+
+        // 清空正视图容器引用
+        this.frontP1Container = null;
+        this.frontP2Container = null;
+        this.frontP3Container = null;
+
         this.onAddCallback = null;
         this.onRemoveCallback = null;
     }
