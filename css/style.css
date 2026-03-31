@@ -596,7 +596,7 @@ body {
 }
 
 .p2-p3-box {
-    bottom: 0;
+    bottom: 70px;
     display: flex;
     justify-content: space-between;
 }
