@@ -261,6 +261,55 @@ class CustomPlateRenderer {
     }
 
     /**
+     * 为单个容器渲染P3输入区域
+     * @param {HTMLElement} container - 目标容器
+     * @param {string} viewName - 视图名称（用于日志）
+     */
+    renderP3Input(container, viewName) {
+        if (!container) {
+            console.warn(`CustomPlateRenderer: ${viewName} P3容器不存在，跳过渲染`);
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="p3-input-container">
+                <input
+                    type="number"
+                    class="p3-input"
+                    placeholder="输入价格"
+                    min="1"
+                    step="1"
+                />
+                <button class="p3-confirm-btn">确认</button>
+                <div class="p3-error" style="color: #e74c3c; font-size: 12px; min-height: 16px; margin-top: 4px;"></div>
+            </div>
+        `;
+
+        // 绑定添加事件
+        const input = container.querySelector('.p3-input');
+        const confirmBtn = container.querySelector('.p3-confirm-btn');
+        const errorDiv = container.querySelector('.p3-error');
+
+        // 安全检查
+        if (!input || !confirmBtn || !errorDiv) {
+            console.error(`CustomPlateRenderer: ${viewName} P3区域元素不完整`);
+            return;
+        }
+
+        // 按钮点击事件
+        confirmBtn.addEventListener('click', () => {
+            this.handleAddPlate(input, errorDiv);
+        });
+
+        // 输入框回车事件
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleAddPlate(input, errorDiv);
+            }
+        });
+    }
+
+    /**
      * 渲染P3输入区域
      */
     renderP3() {
