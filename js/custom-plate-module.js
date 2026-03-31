@@ -310,47 +310,14 @@ class CustomPlateRenderer {
     }
 
     /**
-     * 渲染P3输入区域
+     * 渲染P3输入区域（两个视图）
      */
     renderP3() {
-        if (!this.p3Container) return;
+        // 渲染俯视图P3
+        this.renderP3Input(this.topP3Container, '俯视图');
 
-        this.p3Container.innerHTML = `
-            <div class="p3-input-container">
-                <input
-                    type="number"
-                    class="p3-input"
-                    placeholder="输入价格"
-                    min="1"
-                    step="1"
-                />
-                <button class="p3-confirm-btn">确认</button>
-                <div class="p3-error" style="color: #e74c3c; font-size: 12px; min-height: 16px; margin-top: 4px;"></div>
-            </div>
-        `;
-
-        // 绑定添加事件
-        const input = this.p3Container.querySelector('.p3-input');
-        const confirmBtn = this.p3Container.querySelector('.p3-confirm-btn');
-        const errorDiv = this.p3Container.querySelector('.p3-error');
-
-        // 安全检查
-        if (!input || !confirmBtn || !errorDiv) {
-            console.error('CustomPlateRenderer: P3区域元素不完整');
-            return;
-        }
-
-        // 按钮点击事件
-        confirmBtn.addEventListener('click', () => {
-            this.handleAddPlate(input, errorDiv);
-        });
-
-        // 输入框回车事件
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.handleAddPlate(input, errorDiv);
-            }
-        });
+        // 渲染正视图P3
+        this.renderP3Input(this.frontP3Container, '正视图');
     }
 
     /**
