@@ -56,35 +56,23 @@ class CustomPlateManager {
      * @returns {Array} 自定义碟队列的副本
      */
     getAll() {
-        return [...this.customPlates];
+        return [...this.p1Queue, ...this.p2Queue];
     }
 
     /**
-     * 根据索引获取碟子
-     * @param {number} index - 碟子索引
-     * @returns {Object|null} 碟子对象，不存在返回null
-     */
-    getByIndex(index) {
-        if (index < 0 || index >= this.customPlates.length) {
-            return null;
-        }
-        return this.customPlates[index];
-    }
-
-    /**
-     * 获取偶数索引的碟子（用于P1显示）
-     * @returns {Array} 偶数索引的碟子数组
+     * 获取P1队列的碟子
+     * @returns {Array} P1队列的副本
      */
     getP1Plates() {
-        return this.customPlates.filter((_, index) => index % 2 === 0);
+        return [...this.p1Queue];
     }
 
     /**
-     * 获取奇数索引的碟子（用于P2显示）
-     * @returns {Array} 奇数索引的碟子数组
+     * 获取P2队列的碟子
+     * @returns {Array} P2队列的副本
      */
     getP2Plates() {
-        return this.customPlates.filter((_, index) => index % 2 === 1);
+        return [...this.p2Queue];
     }
 
     /**
@@ -92,14 +80,16 @@ class CustomPlateManager {
      * @returns {number} 总价
      */
     calculateTotal() {
-        return this.customPlates.reduce((sum, plate) => sum + plate.price, 0);
+        return [...this.p1Queue, ...this.p2Queue].reduce((sum, plate) => sum + plate.price, 0);
     }
 
     /**
      * 清空所有自定义碟
      */
     clear() {
-        this.customPlates = [];
+        this.p1Queue = [];
+        this.p2Queue = [];
+        this.nextPlateId = 0;
     }
 
     /**
@@ -144,7 +134,7 @@ class CustomPlateManager {
      * @returns {number} 队列长度
      */
     getLength() {
-        return this.customPlates.length;
+        return this.p1Queue.length + this.p2Queue.length;
     }
 }
 
