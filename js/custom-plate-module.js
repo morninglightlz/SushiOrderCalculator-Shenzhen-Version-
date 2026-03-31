@@ -147,9 +147,14 @@ class CustomPlateManager {
 class CustomPlateRenderer {
     constructor(manager) {
         this.manager = manager;
-        this.p1Container = null;
-        this.p2Container = null;
-        this.p3Container = null;
+        // 俯视图容器
+        this.topP1Container = null;
+        this.topP2Container = null;
+        this.topP3Container = null;
+        // 正视图容器
+        this.frontP1Container = null;
+        this.frontP2Container = null;
+        this.frontP3Container = null;
         this.onAddCallback = null;
         this.onRemoveCallback = null;
         this.boundElements = []; // 追踪绑定过长按事件的元素
@@ -188,7 +193,7 @@ class CustomPlateRenderer {
         const p1Plates = this.manager.getP1Plates();
         this.p1Container.innerHTML = '';
         if (p1Plates.length === 0) {
-            this.p1Container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;">P1：偶数索引自定义碟</div>';
+            this.p1Container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;"></div>';
             return;
         }
         const fragment = document.createDocumentFragment();
@@ -207,7 +212,7 @@ class CustomPlateRenderer {
         const p2Plates = this.manager.getP2Plates();
         this.p2Container.innerHTML = '';
         if (p2Plates.length === 0) {
-            this.p2Container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;">P2：奇数索引自定义碟</div>';
+            this.p2Container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;"></div>';
             return;
         }
         const fragment = document.createDocumentFragment();
