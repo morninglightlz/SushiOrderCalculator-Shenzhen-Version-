@@ -23,13 +23,15 @@ class CustomPlateManager {
 
         // 创建碟子对象
         const plate = {
-            id: Date.now(),
+            id: this.nextPlateId++,
             price: price,
             createTime: Date.now()
         };
 
-        // 添加到队列
-        this.customPlates.push(plate);
+        // 选择目标队列并添加
+        const targetQueue = this.selectTargetQueue();
+        targetQueue.push(plate);
+
         return plate;
     }
 
