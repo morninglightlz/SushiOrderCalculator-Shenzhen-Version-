@@ -36,15 +36,18 @@ class CustomPlateManager {
     }
 
     /**
-     * 从队列删除指定索引的碟子
-     * @param {number} index - 碟子索引
+     * 从指定队列删除指定索引的碟子
+     * @param {string} queueType - 队列类型 ('p1' 或 'p2')
+     * @param {number} index - 碟子在队列中的索引
      * @returns {boolean} 删除成功返回true，失败返回false
      */
-    remove(index) {
-        if (index < 0 || index >= this.customPlates.length) {
+    remove(queueType, index) {
+        const queue = queueType === 'p1' ? this.p1Queue : this.p2Queue;
+
+        if (index < 0 || index >= queue.length) {
             return false;
         }
-        this.customPlates.splice(index, 1);
+        queue.splice(index, 1);
         return true;
     }
 
