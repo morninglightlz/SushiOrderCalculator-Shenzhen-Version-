@@ -471,11 +471,12 @@ const CustomPlateModule = (function() {
             }));
         });
 
-        renderer.onRemove((index) => {
+        renderer.onRemove((index, queueType) => {
             // 触发删除事件
             document.dispatchEvent(new CustomEvent('customPlate:removed', {
                 detail: {
                     index: index,
+                    queueType: queueType,
                     total: manager.calculateTotal()
                 }
             }));
