@@ -232,7 +232,6 @@ class CustomPlateRenderer {
         tag.dataset.queueType = queueType;
         tag.innerHTML = `
             <span class="price">¥${plate.price}</span>
-            <span class="hint">长按删除</span>
         `;
         this.bindLongPress(tag, index, queueType);
         return tag;
