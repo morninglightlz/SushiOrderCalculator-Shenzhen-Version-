@@ -168,19 +168,37 @@ class CustomPlateRenderer {
      * 初始化渲染器，获取DOM元素引用
      */
     init() {
-        this.p1Container = document.querySelector('.p1');
-        this.p2Container = document.querySelector('.p2');
-        this.p3Container = document.querySelector('.p3');
+        // 获取俯视图容器
+        this.topP1Container = document.querySelector('#topView .p1');
+        this.topP2Container = document.querySelector('#topView .p2');
+        this.topP3Container = document.querySelector('#topView .p3');
 
-        if (!this.p1Container || !this.p2Container || !this.p3Container) {
-            console.error('CustomPlateRenderer: 找不到P1/P2/P3容器');
+        // 获取正视图容器
+        this.frontP1Container = document.querySelector('#frontView .p1');
+        this.frontP2Container = document.querySelector('#frontView .p2');
+        this.frontP3Container = document.querySelector('#frontView .p3');
+
+        // 验证俯视图容器
+        if (!this.topP1Container || !this.topP2Container || !this.topP3Container) {
+            console.error('CustomPlateRenderer: 找不到俯视图P1/P2/P3容器');
+        }
+
+        // 验证正视图容器
+        if (!this.frontP1Container || !this.frontP2Container || !this.frontP3Container) {
+            console.error('CustomPlateRenderer: 找不到正视图P1/P2/P3容器');
+        }
+
+        // 至少需要一个视图的容器完整才能继续
+        if ((!this.topP1Container || !this.topP2Container || !this.topP3Container) &&
+            (!this.frontP1Container || !this.frontP2Container || !this.frontP3Container)) {
+            console.error('CustomPlateRenderer: 没有可用的完整视图容器');
             return;
         }
 
-        // 渲染P3输入区域
+        // 渲染P3输入区域（两个视图）
         this.renderP3();
 
-        // 初始渲染P1和P2
+        // 初始渲染P1和P2（两个视图）
         this.renderP1();
         this.renderP2();
     }
