@@ -343,9 +343,6 @@ function showFrontView() {
     elements.backBtn.style.display = 'block';
     elements.totalBtn.style.display = 'none';
 
-    // 隐藏俯视图的自定义碟区域
-    document.querySelectorAll('.p1, .p2-p3-box').forEach(el => el.style.display = 'none');
-
     updateFrontView();
 }
 
