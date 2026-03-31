@@ -40,6 +40,11 @@ function init() {
     // 绑定事件
     bindEvents();
 
+    // 初始化自定义碟模块
+    if (typeof CustomPlateModule !== 'undefined') {
+        CustomPlateModule.init();
+    }
+
     // 初始化显示
     updateDisplay();
 }
@@ -67,6 +72,19 @@ function bindEvents() {
 
     // 清除按钮
     elements.clearBtn.addEventListener('click', clearData);
+
+    // 监听自定义碟变化事件
+    if (typeof CustomPlateModule !== 'undefined') {
+        // 自定义碟添加事件
+        document.addEventListener('customPlate:added', () => {
+            updateTotalDisplay();
+        });
+
+        // 自定义碟删除事件
+        document.addEventListener('customPlate:removed', () => {
+            updateTotalDisplay();
+        });
+    }
 }
 
 // 添加碟子
@@ -292,33 +310,41 @@ function rebuildStack(plateOrder) {
 // 更新总价显示
 function updateTotalDisplay() {
     const total = calculateTotal();
-    elements.totalDisplay.innerHTML = `
-        <span class="label">总价:</span>
-        <span class="amount">¥${total}</span>
-    `;
+    if (elements.totalDisplay) {
+        elements.totalDisplay.innerHTML = `
+            <span class="label">总价:</span>
+            <span class="amount">¥${total}</span>
+        `;
+    }
 }
 
 // 计算总价
 function calculateTotal() {
     let total = 0;
+
+    // 固定碟总价
     for (const color in state.quantities) {
         total += state.quantities[color] * PLATE_CONFIG[color].price;
     }
+
+    // 自定义碟总价
+    if (typeof CustomPlateModule !== 'undefined') {
+        total += CustomPlateModule.calculateTotal();
+    }
+
     return total;
 }
 
 // 显示正视图
 function showFrontView() {
-    if (state.plateOrder.length === 0) {
-        alert('请先添加碟子！');
-        return;
-    }
-
     state.currentView = 'front';
     elements.topView.style.display = 'none';
     elements.frontView.style.display = 'flex';
     elements.backBtn.style.display = 'block';
     elements.totalBtn.style.display = 'none';
+
+    // 隐藏俯视图的自定义碟区域
+    document.querySelectorAll('.p1, .p2-p3-box').forEach(el => el.style.display = 'none');
 
     updateFrontView();
 }
@@ -331,12 +357,18 @@ function showTopView() {
     elements.backBtn.style.display = 'block';
     elements.totalBtn.style.display = 'block';
 
+    // 显示俯视图的自定义碟区域
+    document.querySelectorAll('.p1, .p2-p3-box').forEach(el => el.style.display = '');
+
     updateTopView();
 }
 
 // 清除数据
 function clearData() {
-    if (state.plateOrder.length === 0) {
+    const hasFixedPlates = state.plateOrder.length > 0;
+    const hasCustomPlates = typeof CustomPlateModule !== 'undefined' && CustomPlateModule.getCustomPlates().length > 0;
+
+    if (!hasFixedPlates && !hasCustomPlates) {
         return;
     }
 
@@ -353,9 +385,9 @@ function clearData() {
     // 清空点击顺序
     state.plateOrder = [];
 
-    // 如果在正视图，先返回俯视图
-    if (state.currentView === 'front') {
-        showTopView();
+    // 清空自定义碟
+    if (typeof CustomPlateModule !== 'undefined') {
+        CustomPlateModule.clear();
     }
 
     // 更新所有显示（包括数量）
