@@ -204,22 +204,41 @@ class CustomPlateRenderer {
     }
 
     /**
-     * 渲染P1区域（偶数索引自定义碟）
+     * 渲染P1区域（偶数索引自定义碟）- 同时渲染到两个视图
      */
     renderP1() {
-        if (!this.p1Container) return;
         const p1Plates = this.manager.getP1Plates();
-        this.p1Container.innerHTML = '';
+
+        // 渲染到俯视图
+        this.renderP1ToContainer(this.topP1Container, p1Plates);
+
+        // 渲染到正视图
+        this.renderP1ToContainer(this.frontP1Container, p1Plates);
+    }
+
+    /**
+     * 为单个容器渲染P1区域
+     * @param {HTMLElement} container - 目标容器
+     * @param {Array} p1Plates - P1碟子数组
+     */
+    renderP1ToContainer(container, p1Plates) {
+        if (!container) {
+            return; // 容器不存在，跳过渲染
+        }
+
+        container.innerHTML = '';
+
         if (p1Plates.length === 0) {
-            this.p1Container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;"></div>';
+            container.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center; padding: 10px;"></div>';
             return;
         }
+
         const fragment = document.createDocumentFragment();
         p1Plates.forEach((plate, index) => {
             const tag = this.createPlateTag(plate, index, 'p1');
             fragment.appendChild(tag);
         });
-        this.p1Container.appendChild(fragment);
+        container.appendChild(fragment);
     }
 
     /**
