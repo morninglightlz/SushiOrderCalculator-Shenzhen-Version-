@@ -141,7 +141,8 @@ body {
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    z-index: 20; /* 确保在P1/P2/P3之上 */
+    z-index: 20;
+    /* 确保在P1/P2/P3之上 */
     transition: background 0.2s;
     color: white;
 }
@@ -182,7 +183,8 @@ body {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 20; /* 确保在P1/P2/P3之上 */
+    z-index: 20;
+    /* 确保在P1/P2/P3之上 */
     transition: background 0.2s;
 }
 
@@ -244,7 +246,7 @@ body {
     border-radius: 50%;
     border: none;
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-image: url('../images/plates.png');
@@ -591,7 +593,7 @@ body {
 .p1 {
     position: absolute;
     width: 100%;
-    height: 200px;
+    height: calc((100% - 200px)/2);
     z-index: 10;
 }
 
@@ -613,8 +615,9 @@ body {
 .p1,
 .p2,
 .p3 {
-    border: 2px solid #000;
+    /* border: 2px solid #000; */
 }
+
 
 /* ==================== 自定义碟样式 ==================== */
 
@@ -639,6 +642,8 @@ body {
     animation: fadeIn 0.3s ease-out;
     max-width: 150px;
     max-height: 150px;
+    aspect-ratio: 1/1;
+    flex: 1;
 }
 
 .custom-plate-tag:hover {
@@ -665,9 +670,49 @@ body {
         opacity: 0;
         transform: scale(0.8);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+.front-view {
+
+    .p1,
+    .p2-p3-box {
+        top: 0;
+        width: calc((100% - 150px) / 2);
+        height: calc(100% - 100px);
+    }
+
+    .p1 {
+        left: 0;
+    }
+
+    .p2-p3-box {
+        right: 0;
+        flex-direction: column;
+
+        .p2 {
+            flex: 1;
+        }
+
+        .p3 {
+            flex: none;
+            height: 150px;
+        }
+    }
+
+    .custom-plate-tag {
+        background-image: url('../images/正视图.png');
+        max-width: 150px;
+        max-height: 150px;
+        aspect-ratio: 554/221;
+        flex: 1;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
+        border-radius: 0px;
+        background-size: contain;
     }
 }
 
@@ -736,8 +781,8 @@ body {
     gap: 4px;
     padding: 10px;
     overflow-y: auto;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(5px);
+    /* background: rgba(255, 255, 255, 0.3); */
+    /* backdrop-filter: blur(5px); */
 }
 
 .p2 {
@@ -748,15 +793,17 @@ body {
     gap: 4px;
     padding: 10px;
     overflow-y: auto;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(5px);
+    /* background: rgba(255, 255, 255, 0.3); */
+    /* backdrop-filter: blur(5px); */
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
+
     .p1,
     .p2-p3-box {
-        height: 150px;
+        height: calc((100% - 300px)/2);
+
     }
 
     .p2-p3-box {
@@ -769,6 +816,8 @@ body {
         margin: 3px;
         max-width: 150px;
         max-height: 150px;
+        min-width: 40px;
+        min-height: 40px;
     }
 
     .custom-plate-tag .price {
@@ -796,6 +845,7 @@ body {
 
 /* 超小屏幕适配（如 iPhone SE） */
 @media (max-width: 375px) {
+
     .p1,
     .p2-p3-box {
         height: 120px;
@@ -814,9 +864,10 @@ body {
     }
 
     .custom-plate-tag .price {
-        font-size: 12px;
+        font-size: 16px;
         color: white;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.9);
+
     }
 
     .p3-input {
@@ -829,4 +880,3 @@ body {
         padding: 8px;
     }
 }
-
